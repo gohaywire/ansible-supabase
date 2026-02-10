@@ -123,7 +123,7 @@ All roles configurations are within the following file, make sure to update vari
 #### Secrets (Ansible Vault)
 
 - Encrypted secrets live in `env/supabase.secrets.yml` (Ansible Vault).
-- Vault password file (local only): `/home/jlamere/.ansible/.vault_pass`.
+- Vault password file (local only): `~/.ansible/.vault_pass`.
 - The install script loads both `env/supabase.yml` and `env/supabase.secrets.yml` automatically.
 
 ### **6. Starting up the roles**

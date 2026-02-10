@@ -54,7 +54,7 @@ Secrets are redacted.
 ### env/supabase.secrets.yml (new, encrypted)
 
 - Stores all sensitive values (Supabase keys, Postmark creds, Cloudflare token, GitHub OAuth secret).
-- Encrypted with Ansible Vault; password stored in /home/jlamere/.ansible/.vault_pass.
+- Encrypted with Ansible Vault; password stored in ~/.ansible/.vault_pass.
 
 ### install.sh
 
