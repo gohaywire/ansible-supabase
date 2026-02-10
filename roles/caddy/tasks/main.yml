@@ -31,6 +31,9 @@
       /usr/local/go/bin/go install github.com/caddyserver/xcaddy/cmd/xcaddy@{{ xcaddy_version }}
       $HOME/go/bin/xcaddy build \
         --with github.com/greenpau/caddy-security \
+        {% if caddy_dns_provider == "cloudflare" %}
+        --with github.com/caddy-dns/cloudflare \
+        {% endif %}
         --output /usr/bin/caddy
   environment:
     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin"

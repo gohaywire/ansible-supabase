@@ -8,6 +8,9 @@ Requires=network-online.target
 Type=notify
 User=caddy
 Group=caddy
+{% if caddy_dns_provider == "cloudflare" %}
+Environment="CLOUDFLARE_API_TOKEN={{ cloudflare_api_token }}"
+{% endif %}
 ExecStart=/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
 ExecReload=/usr/bin/caddy reload --config /etc/caddy/Caddyfile --force
 TimeoutStopSec=5s

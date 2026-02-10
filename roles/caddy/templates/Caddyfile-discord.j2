@@ -48,6 +48,11 @@ https://{{ base_auth_domain }} {
             roll_keep_for 24h
         }
     }
+	{% if caddy_dns_provider == "cloudflare" %}
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+	{% endif %}
     authenticate with myportal
 }
 
@@ -62,6 +67,11 @@ https://{{ cfg.project_subdomain }} {
             roll_keep_for 24h
         }
     }
+	{% if caddy_dns_provider == "cloudflare" %}
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+	{% endif %}
 	
     {% for path in cfg.paths %}
     handle {{ path }} {

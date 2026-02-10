@@ -6,12 +6,23 @@
 [[ ! $VAR_OPTS ]] && export VAR_OPTS=""
 [[ ! $PLAYBOOK ]] && export PLAYBOOK="playbook"
 [[ ! $ACTION_SELECTED ]] && export ACTION_SELECTED=0
+[[ ! $VAULT_PASS_FILE ]] && export VAULT_PASS_FILE=""
+[[ ! $VAULT_OPT ]] && export VAULT_OPT=""
 
 
 environment_set() {
   env="${1:-supabase}"
   export VAR_OPTS="-e \"@env/${env}.yml\""
+  if [[ -f "env/${env}.secrets.yml" ]]; then
+    export VAR_OPTS="${VAR_OPTS} -e \"@env/${env}.secrets.yml\""
+  fi
   export PLAYBOOK="playbook-${env//[0-9]/}.yml"
+  if [[ -z "$VAULT_PASS_FILE" && -f "/home/jlamere/.ansible/.vault_pass" ]]; then
+    export VAULT_PASS_FILE="/home/jlamere/.ansible/.vault_pass"
+  fi
+  if [[ -n "$VAULT_PASS_FILE" ]]; then
+    export VAULT_OPT="--vault-password-file ${VAULT_PASS_FILE}"
+  fi
 }
 
 sudo_enable() {
@@ -51,7 +62,7 @@ install_ansible() {
 }
 
 ansible_playbook() {
-  ansible_cmd="${USE_SUDO} ansible-playbook ${PLAYBOOK} ${VAR_OPTS} ${VERBOSE}"
+  ansible_cmd="${USE_SUDO} ansible-playbook ${PLAYBOOK} ${VAR_OPTS} ${VAULT_OPT} ${VERBOSE}"
   if [[ $DRY_RUN -eq 1 ]]; then
     echo "${ansible_cmd}"
   else
@@ -61,7 +72,7 @@ ansible_playbook() {
 
 test_ansible() {
   install_ansible
-  ansible_test_cmd="${USE_SUDO} ansible-playbook ${PLAYBOOK} ${VAR_OPTS} ${VERBOSE} --check --diff"
+  ansible_test_cmd="${USE_SUDO} ansible-playbook ${PLAYBOOK} ${VAR_OPTS} ${VAULT_OPT} ${VERBOSE} --check --diff"
   eval "${ansible_test_cmd}"
 }
 

@@ -1,0 +1,6 @@
+# Ansible Vault password files
+**/.vault_pass
+**/*.vault_pass
+
+# Optional local overrides
+*.local
