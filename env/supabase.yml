@@ -80,7 +80,7 @@ gitlab_group_filters:
 ##GitHub #https://docs.authcrunch.com/docs/authenticate/oauth/backend-oauth2-0007-github
 github_oauth_client_id: Ov23li49qNwkIYegY0lZ
 github_oauth_client_secret: VAULT
-github_allow_list: "github.com/jlamere-haywire"
+github_allow_list: "github.com/jlamere-haywire github.com/mkmeyer-gohaywire"
 
 ##Discord #https://docs.authcrunch.com/docs/authenticate/oauth/backend-oauth2-0013-discord
 discord_oauth_client_id: changeit
@@ -100,17 +100,19 @@ root_domain: supabase-dev.haywirenetworks.com # for storing cookies
 projects:
   supabase:
     log_file: supabase-access
-    project_subdomain: "supa.supabase-dev.haywirenetworks.com"
-    backend: "localhost:8000" # kong gateway
-    paths:
-      - /rest/v1/*
-      - /auth/v1/*
-      - /realtime/v1/*
-      - /storage/v1/*
-      - /functions/v1/*
-      - /upload/*
+    project_subdomain: "app.supabase-dev.haywirenetworks.com"
+    backend:
+    paths: []
     frontend: "localhost:3000" # Supabase studio dashboard
     secure: true
+
+  supabase_api:
+    log_file: supabase-api-access
+    project_subdomain: "supa.supabase-dev.haywirenetworks.com"
+    backend:
+    paths: []
+    frontend: "localhost:8000" # kong gateway
+    secure: false
 
   monitor:
     log_file: monitor-access

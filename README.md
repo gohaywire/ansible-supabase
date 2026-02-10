@@ -133,3 +133,21 @@ Use the following script to install Ansible, Git and execute all roles:
 sudo ./install.sh
 ```
 </details>
+
+## Sync local DB from managed Supabase
+
+This replaces the local `public` schema with data from a managed Supabase project.
+
+```bash
+export SRC_DB_URL="postgresql://postgres.<PROJECT_REF>@aws-0-us-east-1.pooler.supabase.com:5432/postgres"
+read -s -p "Source DB password: " SRC_PW; echo
+
+# Dump public from prod and restore locally
+sudo docker exec -i supabase-db psql -U postgres -d postgres -c "DROP SCHEMA public CASCADE;"
+
+sudo docker exec -e PGPASSWORD="$SRC_PW" -i supabase-db \
+  pg_dump --schema=public --no-owner --no-privileges --format=custom "$SRC_DB_URL" > /tmp/public.dump
+
+sudo docker exec -i supabase-db \
+  pg_restore --clean --if-exists --no-owner --no-privileges -U postgres -d postgres < /tmp/public.dump
+```
