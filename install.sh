@@ -17,8 +17,8 @@ environment_set() {
     export VAR_OPTS="${VAR_OPTS} -e \"@env/${env}.secrets.yml\""
   fi
   export PLAYBOOK="playbook-${env//[0-9]/}.yml"
-  if [[ -z "$VAULT_PASS_FILE" && -f "$HOME/.ansible/.vault_pass" ]]; then
-    export VAULT_PASS_FILE="$HOME/.ansible/.vault_pass"
+  if [[ -z "$VAULT_PASS_FILE" ]]; then
+    export VAULT_PASS_FILE="/home/jlamere/.ansible/.vault_pass"
   fi
   if [[ -n "$VAULT_PASS_FILE" ]]; then
     export VAULT_OPT="--vault-password-file ${VAULT_PASS_FILE}"
@@ -109,4 +109,7 @@ done
 if [[ $ACTION_SELECTED -eq 0 ]]; then
   perform_all
 fi
+
+# Ensure the script uses the correct Ansible Vault password file
+export ANSIBLE_VAULT_PASSWORD_FILE="/home/jlamere/.ansible/.vault_pass"
 

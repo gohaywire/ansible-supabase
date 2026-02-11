@@ -78,7 +78,7 @@ gitlab_group_filters:
   - ^a #all groups starting with a
 
 ##GitHub #https://docs.authcrunch.com/docs/authenticate/oauth/backend-oauth2-0007-github
-github_oauth_client_id: Ov23li49qNwkIYegY0lZ
+github_oauth_client_id: VAULT
 github_oauth_client_secret: VAULT
 github_allow_list: "github.com/jlamere-haywire github.com/mkmeyer-gohaywire"
 

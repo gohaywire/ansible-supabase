@@ -77,3 +77,19 @@ Secrets are redacted.
 - roles/caddy/templates/Caddyfile-discord.j2
 - env/supabase.secrets.yml (new, encrypted)
 - install.sh
+
+## Updating Configuration
+
+When making changes, re-run the setup with:
+```bash
+./install.sh -s -a
+```
+
+If making changes to Caddy, verify the status with:
+```bash
+curl localhost:2019/config/ | jq
+```
+Then restart Caddy with:
+```bash
+sudo systemctl restart caddy
+```

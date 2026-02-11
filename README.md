@@ -132,7 +132,22 @@ Use the following script to install Ansible, Git and execute all roles:
 ```bash
 sudo ./install.sh
 ```
-</details>
+
+## Updating Configuration
+
+When making changes, re-run the setup with:
+```bash
+./install.sh -s -a
+```
+
+If making changes to Caddy, verify the status with:
+```bash
+curl localhost:2019/config/ | jq
+```
+Then restart Caddy with:
+```bash
+sudo systemctl restart caddy
+```
 
 ## Sync local DB from managed Supabase
 
