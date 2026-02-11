@@ -4,3 +4,9 @@
 
 # Optional local overrides
 *.local
+
+# Environment variables
+/env/.env
+
+# Sync database log file
+sync_db.log

@@ -157,8 +157,8 @@ This replaces the local `public` schema with data from a managed Supabase projec
 export SRC_DB_URL="postgresql://postgres.<PROJECT_REF>@aws-0-us-east-1.pooler.supabase.com:5432/postgres"
 read -s -p "Source DB password: " SRC_PW; echo
 
-# Dump public from prod and restore locally
-sudo docker exec -i supabase-db psql -U postgres -d postgres -c "DROP SCHEMA public CASCADE;"
+# Drop public schema if it exists
+sudo docker exec -i supabase-db psql -U postgres -d postgres -c "DROP SCHEMA IF EXISTS public CASCADE;"
 
 sudo docker exec -e PGPASSWORD="$SRC_PW" -i supabase-db \
   pg_dump --schema=public --no-owner --no-privileges --format=custom "$SRC_DB_URL" > /tmp/public.dump
