@@ -19,6 +19,8 @@ It is built for fast, repeatable, production-ready deployments on fresh Debian-b
   - [4. Monitor role configuration](#4-Monitor-role-configuration)
   - [5. Configure environment variables](#5-configure-environment-variables) 
   - [6. Starting up the roles](#6-Starting-up-the-roles)
+- [💾 Database Sync Script](#-database-sync-script)
+
 ---
 
 <details open>
@@ -165,4 +167,34 @@ sudo docker exec -e PGPASSWORD="$SRC_PW" -i supabase-db \
 
 sudo docker exec -i supabase-db \
   pg_restore --clean --if-exists --no-owner --no-privileges -U postgres -d postgres < /tmp/public.dump
+```
+
+# Database Sync Script
+
+## Overview
+The `sync_db.sh` script automates the process of syncing the public schema from a source database to the local Supabase database. It is scheduled to run daily at 2 AM via a cron job.
+
+## Setup
+1. **Environment File**:
+   - Create an `.env` file in the `env/` directory based on the provided template.
+   - Set the following variables:
+     - `SRC_DB_URL`: The source database URL.
+     - `SRC_DB_PASSWORD`: The source database password.
+
+2. **Cron Job**:
+   - The script is scheduled to run daily at 2 AM. To modify the schedule, edit the user's crontab:
+     ```bash
+     crontab -e
+     ```
+
+3. **Logs**:
+   - Logs are stored in `sync_db.log` in the project root directory.
+
+4. **Cleanup**:
+   - Temporary files are automatically removed after the script completes.
+
+## Running Manually
+To run the script manually, execute:
+```bash
+./sync_db.sh
 ```

@@ -2,6 +2,7 @@
 
 LOG_FILE="/home/jlamere/ansible-supabase/sync_db.log"
 ENV_FILE="/home/jlamere/ansible-supabase/env/.env"
+TEMP_DUMP="/tmp/public.dump"
 
 # Load environment variables from the env file
 if [ -f "$ENV_FILE" ]; then
@@ -35,12 +36,16 @@ sudo docker exec -i supabase-db psql -U postgres -d postgres -c "DROP SCHEMA IF 
 # Dump the public schema from the source database
 echo "[INFO] Dumping the public schema from the source database..." >> "$LOG_FILE"
 sudo docker exec -e PGPASSWORD="$SRC_DB_PASSWORD" -i supabase-db \
-  pg_dump --schema=public --no-owner --no-privileges --format=custom "$SRC_DB_URL" > /tmp/public.dump 2>> "$LOG_FILE"
+  pg_dump --schema=public --no-owner --no-privileges --format=custom "$SRC_DB_URL" > "$TEMP_DUMP" 2>> "$LOG_FILE"
 
 # Restore the public schema to the local database
 echo "[INFO] Restoring the public schema to the local database..." >> "$LOG_FILE"
 sudo docker exec -i supabase-db \
-  pg_restore --clean --if-exists --no-owner --no-privileges -U postgres -d postgres < /tmp/public.dump >> "$LOG_FILE" 2>&1
+  pg_restore --clean --if-exists --no-owner --no-privileges -U postgres -d postgres < "$TEMP_DUMP" >> "$LOG_FILE" 2>&1
+
+# Cleanup temporary files
+echo "[INFO] Cleaning up temporary files..." >> "$LOG_FILE"
+rm -f "$TEMP_DUMP"
 
 # Log the completion of the process
 echo "[INFO] Database sync process completed successfully." >> "$LOG_FILE"

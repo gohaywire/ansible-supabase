@@ -78,6 +78,26 @@ Secrets are redacted.
 - env/supabase.secrets.yml (new, encrypted)
 - install.sh
 
+## Database Sync Configuration
+
+### Cron Job
+A cron job has been added to run the database sync script daily at 2 AM. The script is located at:
+```
+/home/jlamere/ansible-supabase/sync_db.sh
+```
+
+### Environment File
+The script uses an `.env` file located at:
+```
+/home/jlamere/ansible-supabase/env/.env
+```
+Ensure the following variables are set in the `.env` file:
+- `SRC_DB_URL`: The source database URL.
+- `SRC_DB_PASSWORD`: The source database password.
+
+### Cleanup
+Temporary files created during the sync process are automatically cleaned up after the script completes.
+
 ## Updating Configuration
 
 When making changes, re-run the setup with:
